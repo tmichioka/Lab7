@@ -72,7 +72,7 @@ library(sjPlot)
     ##   tidy.glht         jtools
     ##   tidy.summary.glht jtools
 
-    ## Install package "strengejacke" from GitHub (`devtools::install_github("strengejacke/strengejacke")`) to load all sj-packages at once!
+    ## #refugeeswelcome
 
 ``` r
 ex <- read_sav("C:/Users/Colin/Documents/GitHub/Website/Lab7/ex.sav")
@@ -314,4 +314,4 @@ plot_model(model,  type ="est",  show.values = TRUE, vline.color = "#1B191999", 
 #for this lab assignment you would assume assumptions are met, but for your own analysis, you will need to examine assumptions carefully
 ```
 
-# Q3: Interpret the intercept, the meaning of each of the unstandardized coefficient (e.g., one unit increase in A is associated with x point increase in B), and the R2. Which personality trait(s) can explain unique variance in satisfaction with life when controlling for each other, and which ones cannot? If someone asks you for advice on how to improve life satisfaction, based on your results, which personality trait would you recommend them to change and why?
+# Q3: Interpret the R2. Which personality trait(s) can explain unique variance in satisfaction with life when controlling for each other, and which ones cannot? If someone asks you for advice on how to improve life satisfaction, based on your results, which personality trait would you recommend them to change and why?
