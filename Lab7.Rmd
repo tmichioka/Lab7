@@ -1,0 +1,84 @@
+---
+title: "Lab7"
+author: "Your Name"
+date: "2024-10-17"
+output: "github_document"
+---
+# Load packages and dataset
+```{r}
+library(haven)
+library(bruceR)
+library(dplyr)
+library(ggstatsplot)
+library(performance)
+library(sjPlot)
+
+ex <- read_sav("C:/Users/Colin/Downloads/ex.sav")
+
+lab7<-read.csv("C:/Users/Colin/Downloads/lab7.csv")
+
+
+
+```
+
+# Correlation
+```{r}
+#First, you will need to select variables or composites of interest
+
+ex <- ex %>%
+  select(Conscientiousness, AverageHoursofSleep, GPA)
+
+#The Corr function also gives you a correlation plot between all variables, but it doesn't look pretty enough and not very customizable
+
+Corr(ex)
+
+#If you hate the correlation plot design, you can use the following function
+ggcorrmat(ex)
+
+#If you want to visualize the correlation between two specifcic variables, you can use the following code
+ggplot(ex, aes(x = Conscientiousness, y = GPA)) + geom_point() + geom_smooth() + theme_bruce()
+
+#Note that the line will naturally follow the data points, but you can specify to plot the fittest line by adding method = lm to the geom_smooth() function
+ggplot(ex, aes(x = Conscientiousness, y = GPA)) + geom_point() + geom_smooth(method = lm) + theme_bruce()
+
+
+
+
+```
+
+# Regression
+```{r}
+#step 1: build a model
+model<-lm(GPA ~ Conscientiousness + AverageHoursofSleep, data = ex)
+
+
+#step 2: check the assumptions
+check_model(model)
+
+#step 3: summarize results; add ,std = TRUE if you want to get standardized coefficients
+model_summary(model)
+
+
+# or using the tab_model functionl; add  ,show.std = TRUE if you want to get standardized coefficients
+tab_model(model)
+
+#step 4: plot the results; change type ="est" to type = "std" if you want to plot the standardized coefficients
+plot_model(model,  type ="est",  show.values = TRUE, vline.color = "#1B191999", line.size = 1.5, dot.size = 2.5, colors = "blue") + theme_bruce()
+
+```
+
+
+
+# Q1: Use the Corr or the ggcorrmat function to plot the correlation between all variables. Which personality traits are correlated with satisfaction with life and which one is not? 
+```{r}
+
+```
+
+# Q2: Run a multiple regression using the Big 5 personality traits to predict satisfaction with life and plot the results
+```{r}
+#for this lab assignment you would assume assumptions are met, but for your own analysis, you will need to examine assumptions carefully
+
+
+```
+
+# Q3: Interpret the intercept, the meaning of each of the unstandardized coefficient (e.g., one unit increase in A is associated with x point increase in B), and the R2. Which personality trait(s) can explain unique variance in satisfaction with life when controlling for each other, and which ones cannot? If someone asks you for advice on how to improve life satisfaction, based on your results, which personality trait would you recommend them to change and why? 
