@@ -1,6 +1,6 @@
 ---
 title: "Lab7"
-author: "Your Name"
+author: "Toko Michioka"
 date: "2024-10-17"
 output: "github_document"
 ---
@@ -13,9 +13,9 @@ library(ggstatsplot)
 library(performance)
 library(sjPlot)
 
-ex <- read_sav("C:/Users/Colin/Documents/GitHub/Website/Lab7/ex.sav")
+ex <- read_sav("/Users/toko/Documents/GitHub/Lab7/ex.sav")
 
-lab7<-read.csv("C:/Users/Colin/Documents/GitHub/Website/Lab7/lab7.csv")
+lab7<-read.csv("/Users/toko/Documents/GitHub/Lab7/lab7.csv")
 
 
 
@@ -65,20 +65,51 @@ tab_model(model)
 #step 4: plot the results; change type ="est" to type = "std" if you want to plot the standardized coefficients
 plot_model(model,  type ="est",  show.values = TRUE, vline.color = "#1B191999", line.size = 1.5, dot.size = 2.5, colors = "blue") + theme_bruce()
 
+#ignore posterior predictive check
+
 ```
 
 
 
 # Q1: Use the Corr or the ggcorrmat function to plot the correlation between all variables. Which personality traits are correlated with satisfaction with life and which one is not? 
-```{r}
+# Extraversion, agreeableness, conscientiousness and emtional stability are correlated with satisfaction with life, but openness is not.
 
+```{r}
+#First, you will need to select variables or composites of interest
+  
+Corr(lab7)
+
+#If you hate the correlation plot design, you can use the following function
+ggcorrmat(lab7)
+
+#If you want to visualize the correlation between two specifcic variables, you can use the following code
+ggplot(lab7, aes(x = Extraversion, y = SWL)) + geom_point() + geom_smooth() + theme_bruce()
+ggplot(lab7, aes(x = Agreeableness, y = SWL)) + geom_point() + geom_smooth() + theme_bruce()
+ggplot(lab7, aes(x = Conscientiousness, y = SWL)) + geom_point() + geom_smooth() + theme_bruce()
+ggplot(lab7, aes(x = EmotionalStability, y = SWL)) + geom_point() + geom_smooth() + theme_bruce()
+ggplot(lab7, aes(x = Openness, y = SWL)) + geom_point() + geom_smooth() + theme_bruce()
+
+#Note that the line will naturally follow the data points, but you can specify to plot the fittest line by adding method = lm to the geom_smooth() function
+ggplot(lab7, aes(x = Extraversion, y = SWL)) + geom_point() + geom_smooth(method = lm) + theme_bruce()
+ggplot(lab7, aes(x = Agreeableness, y = SWL)) + geom_point() + geom_smooth(method = lm) + theme_bruce()
+ggplot(lab7, aes(x = Conscientiousness, y = SWL)) + geom_point() + geom_smooth(method = lm) + theme_bruce()
+ggplot(lab7, aes(x = EmotionalStability, y = SWL)) + geom_point() + geom_smooth(method = lm) + theme_bruce()
+ggplot(lab7, aes(x = Openness, y = SWL)) + geom_point() + geom_smooth(method = lm) + theme_bruce()
 ```
 
 # Q2: Run a multiple regression using the Big 5 personality traits to predict satisfaction with life and plot the results
 ```{r}
 #for this lab assignment you would assume assumptions are met, but for your own analysis, you will need to examine assumptions carefully
+model<-lm(SWL ~ Extraversion + Agreeableness + Conscientiousness + EmotionalStability + Openness, data = lab7)
 
+model_summary(model)
 
+plot_model(model,  type ="est",  show.values = TRUE, vline.color = "#1B191999", line.size = 1.5, dot.size = 2.5, colors = "blue") + theme_bruce()
 ```
 
-# Q3: Interpret the R2. Which personality trait(s) can explain unique variance in satisfaction with life when controlling for each other, and which ones cannot? If someone asks you for advice on how to improve life satisfaction, based on your results, which personality trait would you recommend them to change and why? 
+# Q3: Interpret the R2. Which personality trait(s) can explain unique variance in satisfaction with life when controlling for each other, and which ones cannot? 
+#R2 value of .138 means that .138% of the variance in Satisfaction with Life can be explained by variations in Big5 personality. Extraversion, emotional stability, and openness can explain unique variance in satisfaction with life when controlling for each other, and agreeableness and conscientiousness cannot.
+
+#If someone asks you for advice on how to improve life satisfaction, based on your results, which personality trait would you recommend them to change and why?
+#I would suggest them to improve their extraversion and emotional stability since they are positively correlated with relationship satisfaction. I would also tell them to try reducing openness because it is negatively correlated.
+
